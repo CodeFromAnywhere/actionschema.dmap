@@ -33,15 +33,21 @@ export const dmap = async <T, U>(
   return result;
 };
 
-// const createDmap = (apiKey: string, basePath?: string) => {
-//   return async <T, U>(
-//     /** JSON serializable array */
-//     array: T[],
-//     /** Fully scoped map function.   */
-//     mapFn: (item: T, index: number) => Promise<U> | U,
-//   ) => dmap(array, mapFn, { apiKey, basePath });
-// };
-// export default createDmap;
+const createDmap = <T, U>(
+  apiKey: string,
+  basePath?: string,
+): ((
+  array: T[],
+  mapFn: (item: T, index: number) => Promise<U> | U,
+) => Promise<U[]>) => {
+  return (
+    /** JSON serializable array */
+    array: T[],
+    /** Fully scoped map function.   */
+    mapFn: (item: T, index: number) => Promise<U> | U,
+  ) => dmap(array, mapFn, { apiKey, basePath });
+};
+export default createDmap;
 
 // const fn = (n: number) => n * n;
 // dmap([1, 2, 3, 4, 5], fn, { apiKey: "" });
