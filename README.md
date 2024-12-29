@@ -1,4 +1,4 @@
-# ActionSchema - Distributed Maps For Typescript
+# Cloudflare Distributed Maps
 
 `dmap` allows executing map functions in a distributed fashion by adding it to a queue and waiting for all results so you're not constrained by memory and other limitations of serverless environments, such as max 6 concurrent fetches.
 
