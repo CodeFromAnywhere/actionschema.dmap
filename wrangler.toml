@@ -1,6 +1,6 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "ref-workflow"
-main = "dmap-worker.ts"
+main = "worker.ts"
 compatibility_date = "2024-12-27"
 
 routes = [

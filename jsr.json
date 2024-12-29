@@ -1,0 +1,7 @@
+{
+  "name": "@cfa/dmap",
+  "license": "MIT",
+  "version": "1.0.0",
+  "exports": "./mod.ts",
+  "publish": { "include": ["README.md", "dmap.drawio.svg", "mod.ts"] }
+}
