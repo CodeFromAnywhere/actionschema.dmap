@@ -2,6 +2,12 @@
 
 `dmap` allows executing map functions in a distributed fashion by adding it to a queue and waiting for all results so you're not constrained by memory and other limitations of serverless environments, such as max 6 concurrent fetches.
 
+To accomplish this, dmap uses [cloudflare queues](https://developers.cloudflare.com/queues/) together with a [durable object](https://developers.cloudflare.com/durable-objects/), and [deno deploy](https://deno.com/deploy) for evaluating the map function (see [evaloncloud](https://github.com/CodeFromAnywhere/evaloncloud))
+
+# Benchmarking 100000 LLM API calls
+
+TODO: Make a simple map that queues 100k llm api calls
+
 # Cloudflare Blog (Draft)
 
 # Making distributed code execution easier to write
