@@ -1,0 +1,24 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "ref-workflow"
+main = "dmap-worker.ts"
+compatibility_date = "2024-12-27"
+
+routes = [
+  { pattern = "dmap.actionschema.com", custom_domain = true }
+]
+
+[[queues.producers]]
+queue = "workflow-queue"
+binding = "workflow_queue"
+
+[[queues.consumers]]
+queue = "workflow-queue"
+max_concurrency = 250
+
+[[durable_objects.bindings]]
+name = "workflow_durable_object"
+class_name = "WorkflowDurableObject"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["WorkflowDurableObject"]
