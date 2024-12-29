@@ -4,6 +4,11 @@
 
 To accomplish this, dmap uses [cloudflare queues](https://developers.cloudflare.com/queues/) together with a [durable object](https://developers.cloudflare.com/durable-objects/), and [deno deploy](https://deno.com/deploy) for evaluating the map function (see [evaloncloud](https://github.com/CodeFromAnywhere/evaloncloud))
 
+Current limitations:
+
+- will not work for JSON inputs or outputs larger than ±100MB (can be solved using streams)
+- uses a single cloudflare queue so it's not super scalable as it has a max throughput of 5000 messages per second and 250 concurrent (see [cloudflare queue limits](https://developers.cloudflare.com/queues/platform/limits/)), and any usage of dmap can block other dmap usage elsewhere (can be solved using a queue pool)
+
 # Benchmarking 100000 LLM API calls
 
 TODO: Make a simple map that queues 100k llm api calls
