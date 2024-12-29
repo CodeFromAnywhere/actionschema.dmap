@@ -10,6 +10,10 @@ Current limitations:
 - **max itemsize is < 128kb** currently due to queue message size limit (can be increased by using some other short-lived storage medium)
 - **max 250 concurrent, max 5000 rps**; uses a single cloudflare queue so it's not super scalable as it has a max throughput of 5000 messages per second and 250 concurrent (see [cloudflare queue limits](https://developers.cloudflare.com/queues/platform/limits/)), and any usage of dmap can block other dmap usage elsewhere (can be solved using a queue pool)
 
+# Installation
+
+See JSR [@cfa/dmap](https://jsr.io/@cfa/dmap)
+
 # Benchmarking 100000 LLM API calls
 
 TODO: Make a simple map that queues 100k llm api calls
