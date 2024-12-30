@@ -94,7 +94,7 @@ export class WorkflowDurableObject extends DurableObject<Env> {
           .toArray();
 
         const resultArray = results
-          .sort((a, b) => b.id - a.id)
+          .sort((a, b) => a.id - b.id)
           .map((item) => tryParseJson(item.result) || item.result || null);
         console.log("resss", results, resultArray);
 
@@ -167,6 +167,7 @@ export default {
         await request.json();
 
       console.log("initiating new workflow", { array, code });
+      //
       const durableObjectName = crypto.randomUUID();
       console.log({ durableObjectName, length: array.length });
       // If not, enqueue everything
@@ -213,41 +214,62 @@ export default {
         // each message is a request
 
         const { code, index, item, durableObjectName } = message.body;
-
-        // execute request
-        const response = await fetch("https://evaloncloud.deno.dev", {
-          method: "POST",
-          body: JSON.stringify({ code, item, index }),
-        });
-
-        const result: { status: number; error?: string; result?: any } =
-          await response.json();
-
-        // retry cetain ones, don't retry other ones
-        // add intermediate and final results of the request onto the durable object
-        const done =
-          response.status === 200 ||
-          !shouldRetry(response.status, message.attempts);
-
-        const doId = env.workflow_durable_object.idFromName(durableObjectName);
-        const do_instance = env.workflow_durable_object.get(doId);
-
-        console.log("index", index, "done", result);
-
-        // submit the value to the sql DO
-        await do_instance.fetch(
-          new Request("http://something.com/", {
+        let done = false;
+        try {
+          // execute request
+          const response = await fetch("https://evaloncloud.deno.dev", {
             method: "POST",
-            body: JSON.stringify({
-              id: index,
-              status: result.status,
-              error: result.error,
-              result: result.result,
-              created_at: Date.now(),
-              done: done ? 1 : 0,
-            } satisfies ResponseItem),
-          }),
-        );
+            body: JSON.stringify({ code, item, index }),
+          });
+
+          const result: { status: number; error?: string; result?: any } =
+            await response.json();
+
+          // retry cetain ones, don't retry other ones
+          // add intermediate and final results of the request onto the durable object
+          const done =
+            response.status === 200 ||
+            !shouldRetry(response.status, message.attempts);
+          const doId =
+            env.workflow_durable_object.idFromName(durableObjectName);
+          const do_instance = env.workflow_durable_object.get(doId);
+
+          console.log("index", index, "done", result);
+
+          // submit the value to the sql DO
+          await do_instance.fetch(
+            new Request("http://something.com/", {
+              method: "POST",
+              body: JSON.stringify({
+                id: index,
+                status: result.status,
+                error: result.error,
+                result: result.result,
+                created_at: Date.now(),
+                done: done ? 1 : 0,
+              } satisfies ResponseItem),
+            }),
+          );
+        } catch (e: any) {
+          const doId =
+            env.workflow_durable_object.idFromName(durableObjectName);
+          const do_instance = env.workflow_durable_object.get(doId);
+
+          // submit the value to the sql DO
+          await do_instance.fetch(
+            new Request("http://something.com/", {
+              method: "POST",
+              body: JSON.stringify({
+                id: index,
+                status: 500,
+                error: e.message,
+                result: undefined,
+                created_at: Date.now(),
+                done: done ? 1 : 0,
+              } satisfies ResponseItem),
+            }),
+          );
+        }
 
         if (done) {
           message.ack();

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare dmap - Distributed Map Functions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <img src="logo.png" alt="Cloudflare dmap logo" class="h-8" />
+                <h1 class="text-xl font-bold text-gray-900">Cloudflare dmap</h1>
+            </div>
+            <div class="flex items-end space-x-2 text-sm text-gray-600">
+                <span>powered by</span>
+                <img src="logo.png" alt="Cloudflare" class="h-8" />
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+            <div class="text-center">
+                <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
+                    Distributed Map Functions
+                </h1>
+                <p class="mt-6 max-w-2xl mx-auto text-xl text-gray-500">
+                    Execute map functions at scale using Cloudflare's global network. Break free from serverless
+                    limitations.
+                </p>
+                <div class="mt-10">
+                    <a href="https://jsr.io/@cfa/dmap"
+                        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-orange-500 hover:bg-orange-600">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+                <!-- Feature 1 -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900">Simple API</h3>
+                    <div class="mt-4">
+                        <pre class="bg-gray-50 p-4 rounded text-sm overflow-x-auto">
+const result = await dmap(
+  array,
+  (item) => process(item)
+);</pre>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900">Highly Scalable</h3>
+                    <p class="mt-4 text-gray-600">
+                        Process up to 5000 items per second with 250 concurrent operations using Cloudflare's global
+                        infrastructure.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900">Queue-Based Architecture</h3>
+                    <p class="mt-4 text-gray-600">
+                        Built on Cloudflare Queues and Durable Objects for reliable distributed processing.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8">Example Usage</h2>
+            <div class="bg-gray-900 rounded-lg shadow-lg p-6">
+                <pre class="text-gray-300 overflow-x-auto"><code>import { dmap } from "@cfa/dmap";
+
+// Create array of numbers
+const array = new Array(100000)
+  .fill(null)
+  .map((_, index) => index);
+
+// Process using OpenAI API
+const squares = await dmap(array, (n) =>
+  fetch("https://api.openai.com/chat/completions", {
+    method: "POST",
+    body: JSON.stringify({
+      messages: [{
+        role: "user",
+        message: `What's the square of ${n}?`
+      }]
+    }),
+    headers: { Authorization: `Bearer ${apiKey}` }
+  })
+  .then(res => res.json())
+  .then(json => Number(json.choices[0].message.content))
+);</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Benefits -->
+    <div class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">Why Use dmap?</h2>
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <div class="bg-white rounded-lg p-6 shadow-sm">
+                    <h3 class="font-semibold text-lg mb-2">Memory Efficient</h3>
+                    <p class="text-gray-600">Break free from serverless memory constraints by processing data in chunks.
+                    </p>
+                </div>
+                <div class="bg-white rounded-lg p-6 shadow-sm">
+                    <h3 class="font-semibold text-lg mb-2">Parallel Processing</h3>
+                    <p class="text-gray-600">Execute operations concurrently across Cloudflare's global network.</p>
+                </div>
+                <div class="bg-white rounded-lg p-6 shadow-sm">
+                    <h3 class="font-semibold text-lg mb-2">Error Handling</h3>
+                    <p class="text-gray-600">Built-in retry mechanism with exponential backoff for failed operations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-gray-500 text-sm">
+                    &copy; 2024 Cloudflare dmap. All rights reserved.
+                </p>
+                <div class="mt-4">
+                    <a href="https://jsr.io/@cfa/dmap" class="text-orange-500 hover:text-orange-600 text-sm">
+                        View on JSR →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
